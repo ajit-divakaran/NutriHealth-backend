@@ -28,13 +28,15 @@ nhServer.listen(PORT,()=>{
 
 nhServer.get('/usda-foods/:datatype/list',async(req,res)=>{
     // console.log("seacrh",req)
-const searchkey = req.query.search
+let searchkey = req.query.search
+const search = searchkey.split(' ').join('%20') 
 const {datatype} = req.params
 console.log(searchkey,datatype)
 try {
     // console.log(`https://api.nal.usda.gov/fdc/v1/foods/search?query=${search}&dataType=${datatype}&pageSize=50&sortBy=lowercaseDescription.keyword&sortOrder=asc&api_key=${apikey}`)
-    const result = await fetch(`https://api.nal.usda.gov/fdc/v1/foods/search?query=${searchkey}&dataType=${datatype}&api_key=${apikey}`)
+    const result = await fetch(`https://api.nal.usda.gov/fdc/v1/foods/search?query=${search}&dataType=${datatype}&api_key=${apikey}`)
     const data = await result.json()
+    // console.log(data)
     res.status(200).json(data)
 } catch (error) {
     res.status(500).json('Server Error'.error)

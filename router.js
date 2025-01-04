@@ -25,8 +25,10 @@ router.delete('/delete-user-recipe/:foodId',jwtMiddleware,foodcontroller.deleteU
 
 router.post('/add-search-foods',jwtMiddleware,userController.addUserSearchfoods)
 
-router.post('/edit-user-meal',jwtMiddleware,multerConfig.single('foodimg'),dailyfoodController.eachdayfoods)
+router.post('/edit-user-meal/:reQ',jwtMiddleware,multerConfig.single('foodimg'),dailyfoodController.eachdayfoods)
 
 router.post('/add-usda-edit-images',jwtMiddleware,multerConfig.single('foodimg'),userController.editUSDAImages)
+
+router.get('/get-user-meals/:date',jwtMiddleware,dailyfoodController.getusermeals)
 
 module.exports = router
