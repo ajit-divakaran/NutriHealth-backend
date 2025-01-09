@@ -3,6 +3,7 @@ const dailyfoods = require("../models/dailyfoodModel")
 exports.eachdayfoods = async(req,res)=>{
     const userId = req.payload
     const {reQ} = req.params
+    console.log(reQ)
     console.log(userId)
     // const {breakFast,lunch,dinner,snacks,date} = req.body
     const {food_id,food_name,serving,serveUnit,calories,protein,fat,carbs,mealtime,date,foodimg,customServing} = req.body
@@ -19,7 +20,9 @@ exports.eachdayfoods = async(req,res)=>{
             console.log("Date",date)
             console.log("Alraedy existing")
             console.log(existingData[mealtime])
-         if(reQ=='edit'){   if(existingData[mealtime]){
+            console.log(reQ == 'delete')
+         if(reQ =='edit'){   
+            if(existingData[mealtime]){
                 console.log('Inside', mealtime)
                 existingData[mealtime].push({...req.body,foodimg:uploadedImage})
                 await existingData.save()
@@ -28,14 +31,27 @@ exports.eachdayfoods = async(req,res)=>{
             else{
                 console.log('Inside error', mealtime)
                 res.status(406).json('Error occured due to improper meal time or server error')
-            }}
-
-        else if(reQ=='delete'){
-            if(existingData[mealtime] && existingData[mealtime].findIndex(x=>x.food_id)!= -1){
-                console.log('Delete')
-                res.status(200).json('deleted item')
             }
         }
+
+        else if(reQ =='delete'){
+            console.log('Inside delete')
+            console.log()
+            if(existingData[mealtime].findIndex((x)=>x.food_id==food_id )!=-1){
+                const index = existingData[mealtime].findIndex((x)=>x.food_id==food_id)
+                console.log(index)
+                existingData[mealtime] = existingData[mealtime].filter((food,ind)=> ind !== index)
+                console.log(existingData[mealtime])
+                await existingData.save()
+                console.log('Delete',existingData)
+                res.status(200).json(existingData)
+            }
+
+            else{
+                res.status(406).json('No such meal found or error in deleting meal')
+            }
+        }
+
         else{
             res.status(406).json('Invalid query')
         }
