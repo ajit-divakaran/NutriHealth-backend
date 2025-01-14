@@ -6,7 +6,7 @@ exports.eachdayfoods = async(req,res)=>{
     console.log(reQ)
     console.log(userId)
     // const {breakFast,lunch,dinner,snacks,date} = req.body
-    const {food_id,food_name,serving,serveUnit,calories,protein,fat,carbs,mealtime,date,foodimg,customServing} = req.body
+    const {food_id,food_name,serving,serveUnit,calories,protein,fat,carbs,mealtime,date,foodimg,customServing,quantity} = req.body
     console.log("data",req.body)
     const uploadedImage = req.file? process.env.SERVER +'/upload/'+req.file.filename:foodimg
     try {

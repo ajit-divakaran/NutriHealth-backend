@@ -26,13 +26,20 @@ exports.getfooddata = async(req,res)=>{
 
 exports.addfoodgetfooddata = async(req,res) =>{
     const searchkey = req.query.search
+    const inputArr = searchkey.trim().split(' ')
     try {
-        const query = {
-            food_name:{
-                $regex:searchkey, $options:"i",
+        //Convert the arry into regular expression array
+        const regexArray = inputArr.map(input=> new RegExp(input,'i'))
+        // const query = {
+        //     food_name:{
+        //         $regex:searchkey, $options:"i",
+        //     }
+        // }
+        const searchfoods = await foods.find(
+            {food_name:
+                {$in:regexArray}
             }
-        }
-        const searchfoods = await foods.find(query)
+        )
         if(searchfoods){
             res.status(200).json(searchfoods) 
         }
