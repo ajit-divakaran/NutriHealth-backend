@@ -31,4 +31,6 @@ router.post('/add-usda-edit-images',jwtMiddleware,multerConfig.single('foodimg')
 
 router.get('/get-user-meals/:date',jwtMiddleware,dailyfoodController.getusermeals)
 
+router.post('/change-quantity-of-meals',jwtMiddleware,dailyfoodController.changeAfterQuantityUpdate)
+
 module.exports = router

@@ -100,3 +100,25 @@ exports.getusermeals = async(req,res) =>{
         res.status(401).json(err)
     }
 }
+
+exports.changeAfterQuantityUpdate =  async(req,res) =>{
+    const {userId,breakfast,lunch,dinner,snacks,date} = req.body
+    const userid = req.payload
+    console.log(userid)
+
+    try {
+        console.log('hello')
+        // const existingData = await dailyfoods.findByIdAndUpdate({userId:userid,date:date},{
+        //     breakfast,lunch,dinner,snacks
+        // },{new:true})
+        const existingData = await dailyfoods.findOne({userId:userid,date:date})
+        existingData.breakfast= breakfast
+        existingData.lunch= lunch
+        existingData.dinner= dinner
+        existingData.snacks= snacks
+        await existingData.save()
+        res.status(200).json(existingData)
+    } catch (err) {
+        res.status(401).json(err)
+    }
+}
