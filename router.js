@@ -33,4 +33,10 @@ router.get('/get-user-meals/:date',jwtMiddleware,dailyfoodController.getusermeal
 
 router.post('/change-quantity-of-meals',jwtMiddleware,dailyfoodController.changeAfterQuantityUpdate)
 
+router.post('/payment',jwtMiddleware,userController.paymentFunc)
+
+router.post('/retrieve-session',jwtMiddleware,userController.verifypayment)
+
+router.post('/expire-session',userController.cancelSession)
+
 module.exports = router

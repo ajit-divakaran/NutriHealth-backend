@@ -1,5 +1,7 @@
 const jwt =  require('jsonwebtoken')
 const users = require("../models/userModel")
+const stripe = require('stripe')('sk_test_51QjegEF5juGM9lQ5zcvg1GZ83x4yN4JqX6ghmGNxCvizlwvccnPTK3yXPDisrskmmcM3Ii16yptuVP4PiK1b9qS100IbQoAiMl');
+
 
 exports.register = async(req,res) =>{
     const {username,email,password} = req.body
@@ -142,6 +144,72 @@ exports.editUSDAImages = async(req,res) =>{
     }
 }
 
+exports.paymentFunc = async(req,res) =>{
+    const {products} = req.body;
+    console.log(products)
+    try{
+      const session = await stripe.checkout.sessions.create({
+      line_items: [
+        {
+          price_data:{
+            currency:"inr",
+            product_data:{
+              name:products,
+                // images:[product.imgdata]
+            },
+            unit_amount:99 * 100,
+        },
+        quantity:1
+        },
+      ],
+      mode: 'payment',
+      success_url: `http://localhost:5173/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `http://localhost:5173/cancel?session_id={CHECKOUT_SESSION_ID}`,
+      customer_email: 'newdemo@gmail.com',
+    })
+    
+    res.status(200).json(session)
+    }
+    catch(err){
+      res.status(500).json('Internal server error')
+    }
+}
+
+exports.verifypayment = async (req, res) => {
+    const { sessionId } = req.body;
+    const userid = req.payload;
+  
+    try {
+      const session = await stripe.checkout.sessions.retrieve(sessionId);
+    
+      if(session.payment_status === 'paid'){
+        const existingUser = await users.findOne({_id:userid})
+        if(existingUser){
+            existingUser.payment_status = 'paid'
+            await existingUser.save()
+            res.status(200).json(session);
+        }
+        else{
+            res.status(401).json('Error in updating the payment status')
+        }
+      }
+    } catch (error) {
+      console.error('Error retrieving session:', error);
+      res.status(500).json({ error: 'Failed to retrieve session' });
+    }
+  }
+
+
+  exports.cancelSession = async(req,res) =>{
+    const {sessionId} = req.body
+    try {
+        const session = await stripe.checkout.sessions.expire(sessionId);
+        res.status(200).send({ success: true, session });
+      } catch (error) {
+        res.status(500).send({ success: false, error: error.message });
+      }
+    
+  }
 
 // result_add = collection.update_one(
 //     {"name": "John Doe"}, 

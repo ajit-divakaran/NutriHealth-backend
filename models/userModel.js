@@ -35,6 +35,11 @@ const userSchema = new mongoose.Schema({
     changedImages:{
         type:Array,
         default:[]
+    },
+    payment_status:{
+        type:String,
+        default:'unpaid',
+        required:true
     }
 })
 
