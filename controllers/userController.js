@@ -1,6 +1,7 @@
+require('dotenv').config()
 const jwt =  require('jsonwebtoken')
 const users = require("../models/userModel")
-const stripe = require('stripe')('sk_test_51QjegEF5juGM9lQ5zcvg1GZ83x4yN4JqX6ghmGNxCvizlwvccnPTK3yXPDisrskmmcM3Ii16yptuVP4PiK1b9qS100IbQoAiMl');
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 
 exports.register = async(req,res) =>{

@@ -26,6 +26,7 @@ exports.getfooddata = async(req,res)=>{
 
 exports.addfoodgetfooddata = async(req,res) =>{
     const searchkey = req.query.search
+    const userid = req.payload
     const inputArr = searchkey.trim().split(' ')
     try {
         //Convert the arry into regular expression array
@@ -37,7 +38,8 @@ exports.addfoodgetfooddata = async(req,res) =>{
         // }
         const searchfoods = await foods.find(
             {food_name:
-                {$in:regexArray}
+                {$in:regexArray},
+                userId:userid                 
             }
         )
         if(searchfoods){

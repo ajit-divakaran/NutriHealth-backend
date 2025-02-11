@@ -13,18 +13,7 @@ const userSchema = new mongoose.Schema({
         required:true,
         type:String
     },
-    Breakfast:{
-        type:Array
-    },
-    Lunch:{
-        type:Array
-    },
-    Dinner:{
-        type:Array
-    },
-    Snacks:{
-        type:Array
-    },
+    
     goals:{
         required:true,
         type:Array

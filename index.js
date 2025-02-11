@@ -6,6 +6,7 @@ const cors = require('cors')
 const router = require('./router')
 require('dotenv').config()
 require('./connection')
+// const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 const apikey = process.env.API_KEY
 // parse json data received

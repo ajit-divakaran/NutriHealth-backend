@@ -15,7 +15,7 @@ router.get('/user-recipes',jwtMiddleware,foodcontroller.getfooddata)
 
 router.put('/goals',jwtMiddleware,userController.editgoals)
 
-router.get('/all-foods',foodcontroller.addfoodgetfooddata)
+router.get('/all-foods',jwtMiddleware,foodcontroller.addfoodgetfooddata)
 
 router.post('/add-new-recipe',jwtMiddleware,multerConfig.single('foodimg'),foodcontroller.newuserfood)
 
