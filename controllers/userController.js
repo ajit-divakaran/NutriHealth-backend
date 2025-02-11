@@ -148,6 +148,9 @@ exports.editUSDAImages = async(req,res) =>{
 exports.paymentFunc = async(req,res) =>{
     const {products} = req.body;
     console.log(products)
+    console.log('Stripe Key',process.env.STRIPE_SECRET_KEY, typeof process.env.STRIPE_SECRET_KEY )
+    console.log('Stripe',stripe)
+
     try{
       const session = await stripe.checkout.sessions.create({
       line_items: [
