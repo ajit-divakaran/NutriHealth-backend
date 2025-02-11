@@ -164,8 +164,8 @@ exports.paymentFunc = async(req,res) =>{
         },
       ],
       mode: 'payment',
-      success_url: `http://localhost:5173/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `http://localhost:5173/cancel?session_id={CHECKOUT_SESSION_ID}`,
+      success_url: `https://nutri-health-frontend-eight.vercel.app/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `https://nutri-health-frontend-eight.vercel.app/cancel?session_id={CHECKOUT_SESSION_ID}`,
       customer_email: 'newdemo@gmail.com',
     })
     
